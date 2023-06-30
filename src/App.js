@@ -6,8 +6,8 @@ import { useState } from 'react';
 
 function App() {
   const [input, setInput] = useState('');
-  const [ resultUser, setResultUser] = useState();
-  const [ resultRepos, setResultRepos ] = useState();
+  const [ resultUser, setResultUser] = useState({});
+  const [ resultRepos, setResultRepos ] = useState([]);
 
   const searchHandler = (searchString) => {
     setInput(searchString);
@@ -28,14 +28,14 @@ function App() {
 
   const resetHandler = () => {
     setInput('');
-    setResultUser();
-    setResultRepos();
+    setResultUser({});
+    setResultRepos([]);
   }
 
   return (
     <div className="App">
-      <Search onResultReceived={searchHandler}/>
-      <Results userData={resultUser} repoData={resultRepos} resetHandler={resetHandler}/>
+      <Search onResultReceived={searchHandler} resetHandler={resetHandler}/>
+      <Results userData={resultUser} repoData={resultRepos} />
     </div>
   );
 }

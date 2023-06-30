@@ -92,7 +92,7 @@ const Search = (props) => {
                 <br />
                 <input type='submit' value="Go!" />
             </form>
-            <button onClick={() => setInput('')}>Reset</button>
+            <button onClick={resetState}>Reset</button>
             <hr />
         </div>
     );
