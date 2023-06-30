@@ -1,25 +1,27 @@
 import './App.css';
 import Results from './components/Results';
 import Search from './components/Search';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 
 function App() {
   const [input, setInput] = useState('');
   const [ resultUser, setResultUser] = useState({});
   const [ resultRepos, setResultRepos ] = useState([]);
+  
+  useEffect(() => {
+    fetch('https://api.github.com/users/'+input)
+  .then(response => response.json())
+  .then(userData => setResultUser(userData));
+
+  fetch('https://api.github.com/users/'+input+'/repos')
+  .then(response => response.json())
+  .then(repoData => setResultRepos(repoData));
+  }, [input]);
+
 
   const searchHandler = (searchString) => {
     setInput(searchString);
-
-    fetch('https://api.github.com/users/'+input)
-    .then(response => response.json())
-    .then(userData => setResultUser(userData));
-
-    fetch('https://api.github.com/users/'+input+'/repos')
-    .then(response => response.json())
-    .then(repoData => setResultRepos(repoData));
-
 
     console.log(input);
     console.log(resultUser);
