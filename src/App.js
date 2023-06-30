@@ -5,21 +5,25 @@ import { useState, useEffect } from 'react';
 
 
 function App() {
-  const [input, setInput] = useState('');
+  const [input, setInput] = useState("");
   const [ resultUser, setResultUser] = useState({});
-  const [ resultRepos, setResultRepos ] = useState([]);
+  const [ resultRepos, setResultRepos ] = useState([{id:0, name:''}]);
   
   useEffect(() => {
-    fetch('https://api.github.com/users/'+input)
-  .then(response => response.json())
-  .then(userData => setResultUser(userData));
-
-  fetch('https://api.github.com/users/'+input+'/repos')
-  .then(response => response.json())
-  .then(repoData => setResultRepos(repoData));
-  }, [input]);
 
 
+    if(input.length > 0) {
+      fetch('https://api.github.com/users/'+input)
+      .then(response => response.json())
+      .then(userData => setResultUser(userData));
+
+      fetch('https://api.github.com/users/'+input+'/repos')
+      .then(response => response.json())
+      .then(repoData => setResultRepos(repoData));
+    }
+      
+  }, [input])
+    
   const searchHandler = (searchString) => {
     setInput(searchString);
 
@@ -29,14 +33,15 @@ function App() {
   };
 
   const resetHandler = () => {
-    setInput('');
+    setInput("");
     setResultUser({});
     setResultRepos([]);
   }
 
   return (
     <div className="App">
-      <Search onResultReceived={searchHandler} resetHandler={resetHandler}/>
+      <Search onResultReceived={searchHandler} resetHandler={resetHandler} input={input}/>
+
       <Results userData={resultUser} repoData={resultRepos} />
     </div>
   );
